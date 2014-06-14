@@ -4,7 +4,8 @@ Reproducible Data Analysis (Project 1)
 Functions to:
 1. Compute mean per five minutes interval
 2. Compute steps taken per day
-```{r}
+
+```r
 library(lattice)
 
 # ------------------------------------------------------------ #
@@ -55,7 +56,8 @@ computeStepsPerDay <- function(input.data) {
 ```
 
 Load and Preprocess the Data
-```{r}
+
+```r
 # ------------------------------------------------------------ #
 # Load the activity data into the data frame
 # ------------------------------------------------------------ #
@@ -72,13 +74,21 @@ activity.data$steps  <- as.numeric(activity.data$steps)
 steps.per.day <- computeStepsPerDay(activity.data)
 ```
 
+```
+## [1] "mean [10766.1886792453], median [10765]"
+```
+
 Plot - Steps Taken Per Day
-```{r fig.width=7, fig.height=6}
+
+```r
 xyplot(steps ~ date, data = steps.per.day, type = "l")
 ```
 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
+
 Average Daily Activity Pattern
-```{r fig.width=7, fig.height=6}
+
+```r
 # ------------------------------------------------------------ #
 # Calculate and display the mean steps per 5-minutes interval
 # ------------------------------------------------------------ #
@@ -86,13 +96,21 @@ mean.per.five.minute <- computeMeanPerFiveMinuteInterval(activity.data)
 xyplot(average.steps ~ interval, data = mean.per.five.minute, type = "l")
 ```
 
-```{r}
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
+
+
+```r
 interval.with.max.average.steps <- mean.per.five.minute$interval[mean.per.five.minute$average.steps == max(mean.per.five.minute$average.steps)]
 print(paste("time interval with maximum average steps [", interval.with.max.average.steps, "]", sep = ""))
 ```
 
+```
+## [1] "time interval with maximum average steps [835]"
+```
+
 Inputting Missing Data
-```{r}
+
+```r
 # ------------------------------------------------------------ #
 # Fill in the missing NA data to the original data frame
 # ------------------------------------------------------------ #
@@ -108,17 +126,32 @@ for(index in 1:num.rows) {
 print(paste("total NA in original data [", na.count, "]", sep = ""))
 ```
 
+```
+## [1] "total NA in original data [2304]"
+```
+
 Calculate and Display the Total Steps Per Day with New Data
-```{r fig.width=7, fig.height=6}
+
+```r
 # ------------------------------------------------------------ #
 # Calculate and display the total steps per day with new data
 # ------------------------------------------------------------ #
 steps.per.day <- computeStepsPerDay(activity.data)
+```
+
+```
+## [1] "mean [10766.1886792453], median [10766.1886792453]"
+```
+
+```r
 #with(steps.per.day, plot(date, steps, xlab = "time series (sanitized data)", ylab = "steps", type = "h"))
 xyplot(steps ~ date, data = steps.per.day, type = "l")
 ```
 
-```{r fig.width=7, fig.height=6}
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+
+
+```r
 # ------------------------------------------------------------ #
 # Add a new column, day.type to activity data frame
 # ------------------------------------------------------------ #
@@ -147,3 +180,5 @@ combined.data.for.all.days                <- combined.data.for.all.days[complete
 
 xyplot(average.steps ~ interval | factor(day.type), data = combined.data.for.all.days, type = "l", layout = c(1, 2))
 ```
+
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
