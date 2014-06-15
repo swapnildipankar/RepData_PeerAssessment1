@@ -1,7 +1,7 @@
 Reproducible Data Analysis (Project 1)
 ========================================================
 
-**Functions To:**
+**Defining Functions To:**
 - Compute mean per five minutes interval
 - Compute steps taken per day
 
