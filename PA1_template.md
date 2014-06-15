@@ -1,9 +1,10 @@
 Reproducible Data Analysis (Project 1)
 ========================================================
 
-Functions to:
-1. Compute mean per five minutes interval
-2. Compute steps taken per day
+**Functions To:**
+- Compute mean per five minutes interval
+- Compute steps taken per day
+
 
 ```r
 library(lattice)
@@ -19,7 +20,6 @@ computeMeanPerFiveMinuteInterval <- function(input.data) {
     steps <- steps.per.interval[[name]]
     steps <- steps[!is.na(steps)]
     steps <- as.numeric(steps)
-    #print(paste(name, mean(steps), sep = " => "))
     new.row <- c(name, mean(steps))
     steps.per.interval.data <- rbind(steps.per.interval.data, new.row)
   }
@@ -27,7 +27,6 @@ computeMeanPerFiveMinuteInterval <- function(input.data) {
   steps.per.interval.data$average.steps <- as.numeric(steps.per.interval.data$average.steps)
   steps.per.interval.data               <- steps.per.interval.data[complete.cases(steps.per.interval.data), ]
   steps.per.interval.data
-  #summary(steps.per.interval.data)
 }
 
 # ------------------------------------------------------------ #
@@ -38,7 +37,6 @@ computeStepsPerDay <- function(input.data) {
   num.rows        <- length(sum.vector)
   sum.input.data  <- data.frame(date = rep("", num.rows), steps = rep("", num.rows), stringsAsFactors = FALSE)
   for(date in names(sum.vector)) {
-    #print(paste(date, sum.vector[[date]], sep = " => "))
     new.row <- c(date, sum.vector[[date]])
     sum.input.data <- rbind(sum.input.data, new.row)
   }
@@ -50,19 +48,17 @@ computeStepsPerDay <- function(input.data) {
   steps.vector <- steps.vector[!is.na(steps.vector)]
 
   print(paste("mean [", mean(steps.vector), "], median [", median(steps.vector), "]", sep = ""))
-  #summary(sum.vector)
   sum.input.data
 }
 ```
 
-Load and Preprocess the Data
+**Load and Preprocess the Data**
 
 ```r
 # ------------------------------------------------------------ #
 # Load the activity data into the data frame
 # ------------------------------------------------------------ #
 activity.data <- read.csv("activity.csv")
-#head(activity.data)
 
 names(activity.data) <- c("steps", "date", "interval")
 activity.data$date   <- as.POSIXct(activity.data$date, format = "%Y-%m-%d")
@@ -78,7 +74,7 @@ steps.per.day <- computeStepsPerDay(activity.data)
 ## [1] "mean [10766.1886792453], median [10765]"
 ```
 
-Plot - Steps Taken Per Day
+**Plot - Steps Taken Per Day**
 
 ```r
 xyplot(steps ~ date, data = steps.per.day, type = "l")
@@ -86,7 +82,7 @@ xyplot(steps ~ date, data = steps.per.day, type = "l")
 
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
 
-Average Daily Activity Pattern
+**Average Daily Activity Pattern**
 
 ```r
 # ------------------------------------------------------------ #
@@ -108,7 +104,8 @@ print(paste("time interval with maximum average steps [", interval.with.max.aver
 ## [1] "time interval with maximum average steps [835]"
 ```
 
-Inputting Missing Data
+**Input Missing Data**
+*[The missing NA data is replaced by the overall average value for that interval]*
 
 ```r
 # ------------------------------------------------------------ #
@@ -130,7 +127,7 @@ print(paste("total NA in original data [", na.count, "]", sep = ""))
 ## [1] "total NA in original data [2304]"
 ```
 
-Calculate and Display the Total Steps Per Day with New Data
+**Calculate and Display the Total Steps Per Day with New Data**
 
 ```r
 # ------------------------------------------------------------ #
@@ -144,12 +141,12 @@ steps.per.day <- computeStepsPerDay(activity.data)
 ```
 
 ```r
-#with(steps.per.day, plot(date, steps, xlab = "time series (sanitized data)", ylab = "steps", type = "h"))
 xyplot(steps ~ date, data = steps.per.day, type = "l")
 ```
 
 ![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
 
+**Display Average Steps Data for Weekday vs Weekend**
 
 ```r
 # ------------------------------------------------------------ #
@@ -159,9 +156,7 @@ activity.data$day.type <- apply(activity.data, 1, function(row) if(weekdays(as.D
 steps.data.by.day.type  <- split(activity.data[1:3], activity.data$day.type)
 
 mean.per.five.minute.weekday <- computeMeanPerFiveMinuteInterval(steps.data.by.day.type$weekday)
-#xyplot(average.steps ~ interval, data = mean.per.five.minute.weekday, type = "l")
 mean.per.five.minute.weekend <- computeMeanPerFiveMinuteInterval(steps.data.by.day.type$weekend)
-#xyplot(average.steps ~ interval, data = mean.per.five.minute.weekend, type = "l")
 
 # ------------------------------------------------------------ #
 # Create a new data frame with "day type" => ('weekday', 'weekend')
